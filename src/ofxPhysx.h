@@ -4,6 +4,7 @@
 
 #define NDEBUG
 #include "PxPhysicsAPI.h"
+#include "PxCudaContextManager.h"
 #include "extensions/PxExtensionsAPI.h"
 #include "common/PxRenderBuffer.h"
 
@@ -368,9 +369,9 @@ protected:
 	
 	PxScene *scene;
 	PxMaterial *defaultMaterial;
+	pxtask::CudaContextManager* cudaContextManager;
 	
 	bool inited;
-	
 };
 	
 }

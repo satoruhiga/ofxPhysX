@@ -9,7 +9,13 @@ static PxDefaultErrorCallback gDefaultErrorCallback;
 static PxDefaultAllocator gDefaultAllocatorCallback;
 static PxSimulationFilterShader gDefaultFilterShader=PxDefaultSimulationFilterShader;
 
-World::World() : inited(false)
+World::World()
+	: physics(NULL),
+	cpuDispatcher(NULL),
+	scene(NULL),
+	defaultMaterial(NULL),
+	cudaContextManager(NULL),
+	inited(false)
 {
 }
 
@@ -26,7 +32,10 @@ void World::setup(ofVec3f gravity)
 	
 	PxInitExtensions(*physics);
 	
-	PxSceneDesc sceneDesc(physics-> getTolerancesScale());
+	pxtask::CudaContextManagerDesc cudaContextManagerDesc;
+	cudaContextManager = pxtask::createCudaContextManager(cudaContextManagerDesc, &physics->getProfileZoneManager());
+
+	PxSceneDesc sceneDesc(physics->getTolerancesScale());
 	sceneDesc.gravity = toPx(gravity);
 	
 	if(!sceneDesc.cpuDispatcher)
@@ -41,13 +50,16 @@ void World::setup(ofVec3f gravity)
 	if(!sceneDesc.filterShader)
 		sceneDesc.filterShader	= gDefaultFilterShader;
 	
+	if (!sceneDesc.gpuDispatcher && cudaContextManager)
+		sceneDesc.gpuDispatcher = cudaContextManager->getGpuDispatcher();
+	
 	scene = physics->createScene(sceneDesc);
 	assert(scene);
 	
 	scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 	scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
 	scene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 3.0f);
-
+	
 	defaultMaterial = physics->createMaterial(0.5, 0.5, 0.5);
 }
 	

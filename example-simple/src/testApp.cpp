@@ -10,8 +10,8 @@ vector<ofxPhysX::Rigid> rigids;
 //--------------------------------------------------------------
 void testApp::setup()
 {
-	ofSetVerticalSync(true);
-	ofSetFrameRate(60);
+//	ofSetVerticalSync(true);
+//	ofSetFrameRate(60);
 	
 	ofBackground(0);
 	
