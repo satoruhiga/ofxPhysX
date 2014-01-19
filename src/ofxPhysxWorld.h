@@ -16,7 +16,7 @@ public:
 	World();
 	virtual ~World();
 	
-	bool setup(const ofVec3f& gravity = ofVec3f(0, -980, 0), float world_scale = 100);
+	bool setup(const ofVec3f& gravity = ofVec3f(0, -980, 0));
 	void update();
 	void draw();
 	
@@ -31,11 +31,6 @@ public:
 	void setGravity(ofVec3f gravity);
 	
 	void clear();
-	
-	float getWorldScale() const { return world_scale; }
-	float getInvWorldScale() const { return inv_world_scale; }
-	
-	float getTorqueScale() const { return torque_scale; }
 	
 protected:
 	
@@ -53,11 +48,6 @@ protected:
 	physx::PxMaterial *defaultMaterial;
 	
 	physx::PxCudaContextManager* cudaContextManager;
-	
-	float world_scale, inv_world_scale;
-	float torque_scale, inv_torque_scale;
-	float density_scale, inv_density_scale;
-	physx::PxTolerancesScale scale;
 };
 
 OFX_PHYSX_END_NAMESPACE

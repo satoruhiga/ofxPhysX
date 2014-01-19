@@ -3,6 +3,7 @@
 #include "ofxPhysXConstants.h"
 #include "ofxPhysXHelper.h"
 #include "ofxPhysXActor.h"
+#include "ofxPhysXWorldScale.h"
 
 OFX_PHYSX_BEGIN_NAMESPACE
 
@@ -81,6 +82,8 @@ public:
 		else
 			T = toPx(torque);
 		
+		T *= WorldScale::getTorqueScale();
+		
 		rigid->addTorque(T, physx::PxForceMode::eFORCE);
 		return *this;
 	}
@@ -93,6 +96,8 @@ public:
 			T = rigid->getGlobalPose().q.rotate(toPx(torque));
 		else
 			T = toPx(torque);
+		
+		T *= WorldScale::getTorqueScale();
 		
 		rigid->addTorque(T, physx::PxForceMode::eIMPULSE);
 		return *this;
