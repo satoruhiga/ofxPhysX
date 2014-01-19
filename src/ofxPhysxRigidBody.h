@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ofxPhysxConstants.h"
-#include "ofxPhysxHelper.h"
-#include "ofxPhysxActor.h"
+#include "ofxPhysXConstants.h"
+#include "ofxPhysXHelper.h"
+#include "ofxPhysXActor.h"
 
 OFX_PHYSX_BEGIN_NAMESPACE
 
@@ -86,7 +86,8 @@ public:
 	}
 	
 	inline RigidBody& applyImpulseTorque(const ofVec3f& torque, bool is_local = false)
-	{		physx::PxVec3 T;
+	{
+		physx::PxVec3 T;
 		
 		if (is_local)
 			T = rigid->getGlobalPose().q.rotate(toPx(torque));

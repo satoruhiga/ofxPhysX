@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ofxPhysxConstants.h"
-#include "ofxPhysxHelper.h"
-#include "ofxPhysxWorld.h"
-#include "ofxPhysxRigidBody.h"
-#include "ofxPhysxRigidStatic.h"
+#include "ofxPhysXConstants.h"
+#include "ofxPhysXHelper.h"
+#include "ofxPhysXWorld.h"
+#include "ofxPhysXRigidBody.h"
+#include "ofxPhysXRigidStatic.h"

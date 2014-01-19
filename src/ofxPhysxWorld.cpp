@@ -15,7 +15,9 @@ World::World() :
 	cpuDispatcher(NULL),
 	scene(NULL),
 	defaultMaterial(NULL),
-	cudaContextManager(NULL)
+	cudaContextManager(NULL),
+	world_scale(100),
+	inv_world_scale(1. / world_scale)
 {
 }
 
@@ -71,6 +73,13 @@ bool World::setup(const ofVec3f& gravity, float world_scale)
 	clear();
 	
 	this->world_scale = world_scale;
+	inv_world_scale = 1. / world_scale;
+	
+	torque_scale = pow(world_scale, 2);
+	inv_torque_scale = 1. / torque_scale;
+	
+	density_scale = pow(world_scale, 3);
+	inv_density_scale = 1. / density_scale;
 	
 	foundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
 	ASSERT(foundation);
@@ -90,7 +99,6 @@ bool World::setup(const ofVec3f& gravity, float world_scale)
 		}
 	}
 	
-	physx::PxTolerancesScale scale;
 	scale.length = world_scale;
 	scale.mass = 1000;
 	scale.speed = scale.length * 10;
@@ -252,30 +260,30 @@ physx::PxRigidActor* World::updateMassAndInertia(physx::PxRigidActor *rigid, flo
 
 physx::PxActor* World::addBox(const ofVec3f& size, const ofVec3f& pos, const ofQuaternion& rot, float density)
 {
-	physx::PxRigidActor *rigid = createRigid(pos, rot, density);
+	physx::PxRigidActor *rigid = createRigid(pos, rot, density * inv_density_scale);
 	rigid->createShape(physx::PxBoxGeometry(toPx(size)), *defaultMaterial);
-	return updateMassAndInertia(rigid, density);
+	return updateMassAndInertia(rigid, density * inv_density_scale);
 }
 
 physx::PxActor* World::addSphere(const float size, const ofVec3f& pos, const ofQuaternion& rot, float density)
 {
-	physx::PxRigidActor *rigid = createRigid(pos, rot, density);
+	physx::PxRigidActor *rigid = createRigid(pos, rot, density * inv_density_scale);
 	rigid->createShape(physx::PxSphereGeometry(size), *defaultMaterial);
-	return updateMassAndInertia(rigid, density);
+	return updateMassAndInertia(rigid, density * inv_density_scale);
 }
 
 physx::PxActor* World::addCapsule(const float radius, const float height, const ofVec3f& pos, const ofQuaternion& rot, float density)
 {
-	physx::PxRigidActor *rigid = createRigid(pos, rot, density);
+	physx::PxRigidActor *rigid = createRigid(pos, rot, density * inv_density_scale);
 	rigid->createShape(physx::PxCapsuleGeometry(radius, height), *defaultMaterial);
-	return updateMassAndInertia(rigid, density);
+	return updateMassAndInertia(rigid, density * inv_density_scale);
 }
 
 physx::PxActor* World::addPlane(const ofVec3f& pos, const ofQuaternion& rot, float density)
 {
-	physx::PxRigidActor *rigid = createRigid(pos, rot, density);
+	physx::PxRigidActor *rigid = createRigid(pos, rot, density * inv_density_scale);
 	rigid->createShape(physx::PxPlaneGeometry(), *defaultMaterial, physx::PxTransform(physx::PxVec3(0, 0, 0), physx::PxQuat(ofDegToRad(90), physx::PxVec3(0, 0, 1))));
-	return updateMassAndInertia(rigid, density);
+	return updateMassAndInertia(rigid, density * inv_density_scale);
 }
 
 physx::PxActor* World::addWorldBox(const ofVec3f &leftBottomFar, const ofVec3f& rightTopNear)

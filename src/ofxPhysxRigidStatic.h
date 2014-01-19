@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ofxPhysxConstants.h"
-#include "ofxPhysxHelper.h"
-#include "ofxPhysxActor.h"
+#include "ofxPhysXConstants.h"
+#include "ofxPhysXHelper.h"
+#include "ofxPhysXActor.h"
 
 OFX_PHYSX_BEGIN_NAMESPACE
 

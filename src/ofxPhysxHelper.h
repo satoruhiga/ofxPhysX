@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofxPhysxConstants.h"
+#include "ofxPhysXConstants.h"
 
 OFX_PHYSX_BEGIN_NAMESPACE
 
