@@ -165,6 +165,7 @@ void World::draw()
 		return;
 	}
 	
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
 	glPushMatrix();
 	
 	const physx::PxRenderBuffer& debugRenderable = scene->getRenderBuffer();
@@ -204,6 +205,7 @@ void World::draw()
 	}
 	
 	glPopMatrix();
+	glPopAttrib();
 }
 
 //
@@ -251,7 +253,7 @@ physx::PxRigidActor* World::updateMassAndInertia(physx::PxRigidActor *rigid, flo
 physx::PxActor* World::addBox(const ofVec3f& size, const ofVec3f& pos, const ofQuaternion& rot, float density)
 {
 	physx::PxRigidActor *rigid = createRigid(pos, rot, density * WorldScale::getInvDensityScale());
-	rigid->createShape(physx::PxBoxGeometry(toPx(size)), *defaultMaterial);
+	rigid->createShape(physx::PxBoxGeometry(toPx(size / 2)), *defaultMaterial);
 	return updateMassAndInertia(rigid, density * WorldScale::getInvDensityScale());
 }
 
@@ -265,7 +267,7 @@ physx::PxActor* World::addSphere(const float size, const ofVec3f& pos, const ofQ
 physx::PxActor* World::addCapsule(const float radius, const float height, const ofVec3f& pos, const ofQuaternion& rot, float density)
 {
 	physx::PxRigidActor *rigid = createRigid(pos, rot, density * WorldScale::getInvDensityScale());
-	rigid->createShape(physx::PxCapsuleGeometry(radius, height), *defaultMaterial);
+	rigid->createShape(physx::PxCapsuleGeometry(radius, height / 2), *defaultMaterial);
 	return updateMassAndInertia(rigid, density * WorldScale::getInvDensityScale());
 }
 

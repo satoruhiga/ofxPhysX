@@ -59,7 +59,7 @@ public:
 		return *this;
 	}
 	
-	inline RigidBody& applyImpulseForce(const ofVec3f& force, bool is_local = false)
+	inline RigidBody& applyForceImpulse(const ofVec3f& force, bool is_local = false)
 	{
 		physx::PxVec3 F;
 		
@@ -88,7 +88,15 @@ public:
 		return *this;
 	}
 	
-	inline RigidBody& applyImpulseTorque(const ofVec3f& torque, bool is_local = false)
+	inline RigidBody& applyTorque(const ofQuaternion& torque, float scaler = 1, bool is_local = false)
+	{
+		float angle;
+		ofVec3f axis;
+		torque.getRotate(angle, axis);
+		applyTorque(ofDegToRad(angle) * scaler * axis, is_local);
+	}
+	
+	inline RigidBody& applyTorqueImpulse(const ofVec3f& torque, bool is_local = false)
 	{
 		physx::PxVec3 T;
 		
@@ -103,6 +111,14 @@ public:
 		return *this;
 	}
 	
+	inline RigidBody& applyTorqueImpulse(const ofQuaternion& torque, float scaler = 1, bool is_local = false)
+	{
+		float angle;
+		ofVec3f axis;
+		torque.getRotate(angle, axis);
+		applyTorqueImpulse(ofDegToRad(angle) * scaler * axis, is_local);
+	}
+
 	inline RigidBody& clearForce()
 	{
 		rigid->clearForce(physx::PxForceMode::eFORCE);

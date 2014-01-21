@@ -74,17 +74,17 @@ public:
 		{
 			physx::PxCapsuleGeometry g;
 			shape->getCapsuleGeometry(g);
-			return ofVec3f(g.radius, g.halfHeight);
+			return ofVec3f(g.radius, g.halfHeight * 2);
 		}
 		else if (t == physx::PxGeometryType::eBOX)
 		{
 			physx::PxBoxGeometry g;
 			shape->getBoxGeometry(g);
-			return toOF(g.halfExtents);
+			return toOF(g.halfExtents * 2);
 		}
 		else
 		{
-			ofLogWarning("ofxPhysX::setSize", "unimplemented shape type");
+			ofLogWarning("ofxPhysX::RigidActor_::getSize", "unimplemented shape type");
 		}
 		
 		return ofVec3f(0, 0, 0);
@@ -116,7 +116,7 @@ public:
 		}
 		else
 		{
-			ofLogWarning("ofxPhysX::setSize", "unimplemented shape type");
+			ofLogWarning("ofxPhysX::RigidActor_::setSize", "unimplemented shape type");
 		}
 	}
 
